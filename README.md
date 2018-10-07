@@ -64,7 +64,7 @@ python loop_labeler.py --folder $IMAGES_FOLDER
 ```
 
 where ```$IMAGES_FOLDER``` is a folder containing a sequence of images (like described in the paper). You can use one of the **scan_XX/images** folder described above as a first test.
-When the tool starts will show a ToolTip guiding the user to draw a specific object (drag&drop with mouse). After the manual labeling stage press ```q``` to start the automated labeling procedure for the following frames.
+When the tool starts will show a ToolTip guiding the user to draw a specific object (drag&drop with mouse). Press ```n``` to go to the next object, or ```c``` to clear current label. After the manual labeling stage press ```q``` to start the automated labeling procedure for the following frames.
 
 If you need the full code for the labeling pipeline please contact me at: **d.degregorio AT unibo.it**
 
