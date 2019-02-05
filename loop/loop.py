@@ -958,6 +958,65 @@ class Dataset(object):
         return entries_map
 
 
+class MotionEstimatorParameters(object):
+    ALGORITHM_ORB = 'ORB'
+
+    def __init__(self):
+        self.algorithm = MotionEstimatorParameters.ALGORITHM_ORB
+        self.number_of_features = 2000
+
+
+class MotionEstimator(object):
+
+    def __init__(self, parameters=MotionEstimatorParameters()):
+        self.parameters = parameters
+
+        if parameters.algorithm == MotionEstimatorParameters.ALGORITHM_ORB:
+            # ORB DETECTOR
+            self.detector = cv2.ORB_create(parameters.number_of_features)
+
+    def computeMotion(self, img1, img2, compute_affine=False, debug=False):
+
+        # find the keypoints and descriptors with SIFT
+        kp1, des1 = self.detector.detectAndCompute(img1, None)
+        kp2, des2 = self.detector.detectAndCompute(img2, None)
+
+        if debug:
+            out1 = img1.copy()
+            out1 = cv2.drawKeypoints(img1, kp1, out1)
+            out2 = img2.copy()
+            out2 = cv2.drawKeypoints(img2, kp2, out2)
+            out = np.vstack((out1, out2))
+            h, w = out.shape[:2]
+            out = cv2.resize(out, (int(w * 0.5), int(h * 0.5)), interpolation=cv2.INTER_CUBIC)
+            cv2.imshow("motion_debug", out)
+            cv2.waitKey(0)
+
+        good = []
+        if self.parameters.algorithm == MotionEstimatorParameters.ALGORITHM_ORB:
+            bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+            # Match descriptors.
+            matches = bf.match(des1, des2)
+
+            # Sort them in the order of their distance.
+            matches = sorted(matches, key=lambda x: x.distance)
+            good = matches
+
+        src_pts = np.float32([kp1[m.queryIdx].pt for m in good]).reshape(-1, 1, 2)
+        dst_pts = np.float32([kp2[m.trainIdx].pt for m in good]).reshape(-1, 1, 2)
+
+        if compute_affine:
+            M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC, 5.0)
+            if M is None:
+                return None
+        else:
+            M = cv2.estimateRigidTransform(src_pts, dst_pts, False)
+            if M is None:
+                return None
+            M = np.vstack((M, np.array([0, 0, 1])))
+
+        return M
+
 # Print iterations progress
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, length=100, fill='█'):
     """

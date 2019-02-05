@@ -402,7 +402,7 @@ class Application(Frame):
     def createWidgets(self):
 
         # im = Image.open("/home/daniele/Pictures/stand-alone-1280-720-3835.jpg")
-        im = Image.open("/home/daniele/data/datasets/yolo_compass/Compass2018/scan_1/images/rgb_00013.jpg")
+        im = Image.open("/Users/daniele/Downloads/loop_dataset_2018/scan_01/images/0000001.jpg")
 
         grow = 1.5
         width, height = im.size
