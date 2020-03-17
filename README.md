@@ -1,5 +1,7 @@
 # LOOP
 
+# SUPPLEMENTARY MATERIAL - VIDEO: (https://www.youtube.com/watch?v=HCwezrB3xys)
+
 ## Datasets
 
 ### Loop Dataset 2018
