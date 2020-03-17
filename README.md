@@ -1,6 +1,6 @@
 # LOOP
 
-# SUPPLEMENTARY MATERIAL - VIDEO: (https://www.youtube.com/watch?v=HCwezrB3xys)
+# SUPPLEMENTARY MATERIAL - VIDEO: (https://www.youtube.com/watch?v=njLINQIA9iI)
 
 ## Datasets
 
